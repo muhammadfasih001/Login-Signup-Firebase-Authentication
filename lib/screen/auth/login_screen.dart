@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_login_page/screen/auth/forgot_password.dart';
 import 'package:flutter_login_page/screen/auth/register_screen.dart';
 import 'package:flutter_login_page/screen/ui/home_view.dart';
 import 'package:flutter_login_page/utils/utils.dart';
@@ -33,8 +34,6 @@ class _LoginScreenState extends State<LoginScreen> {
         .then((value) {
       setState(() {
         Utils().toastMessage("Log in Successfully");
-        emailController.clear();
-        passwordController.clear();
         circularLoader = false;
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => const HomeView()));
@@ -227,6 +226,28 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                   const SizedBox(
+                    height: 15,
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ForgotPassword()));
+                      },
+                      child: const Text(
+                        "Forgot Password? ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.deepPurple,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
                     height: 20,
                   ),
                   Row(
@@ -236,6 +257,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         "Don't have an account ?   ",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
+                          fontSize: 16,
                         ),
                       ),
                       InkWell(
@@ -251,12 +273,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             color: Colors.deepPurple,
-                            fontSize: 17,
+                            fontSize: 16,
                           ),
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

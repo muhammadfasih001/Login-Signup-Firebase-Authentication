@@ -39,10 +39,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         .then((value) {
       setState(() {
         Utils().toastMessage("You'r Account has been Successfully registered");
-        userNameController.clear();
-        emailController.clear();
-        passwordController.clear();
         circularLoader = false;
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => LoginScreen()));
       });
     }).onError((error, stackTrace) {
       setState(() {
