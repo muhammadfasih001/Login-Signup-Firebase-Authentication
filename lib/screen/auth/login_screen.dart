@@ -21,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  final _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void login() {
     setState(() {
@@ -168,6 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               color: Colors.deepPurple,
                             ),
                             suffixIcon: InkWell(
+                              splashColor: Colors.transparent,
                               onTap: () {
                                 hideAndShow();
                               },

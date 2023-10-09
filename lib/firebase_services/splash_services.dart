@@ -16,7 +16,7 @@ class SplashServices {
             context, MaterialPageRoute(builder: (context) => const HomeView()));
       });
     } else {
-      Timer(const Duration(seconds: 2), () {
+      Timer(const Duration(seconds: 3), () {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const LoginScreen()));
       });

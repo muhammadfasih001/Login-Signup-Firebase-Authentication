@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login_page/screen/auth/login_screen.dart';
@@ -19,8 +20,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final userNameController = TextEditingController();
+  final contactController = TextEditingController();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final CollectionReference fireStore =
+      FirebaseFirestore.instance.collection("users");
 
   hideAndShow() {
     setState(() {
@@ -28,34 +32,61 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
-  void signUp() {
-    setState(() {
-      circularLoader = true;
-    });
-    _auth
-        .createUserWithEmailAndPassword(
-            email: emailController.text.toString(),
-            password: passwordController.text.toString())
-        .then((value) {
+  void signUp() async {
+    try {
       setState(() {
-        Utils().toastMessage("You'r Account has been Successfully registered");
-        circularLoader = false;
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginScreen()));
+        circularLoader = true;
       });
-    }).onError((error, stackTrace) {
+
+      // Create a new user account with Firebase Authentication
+      await _auth.createUserWithEmailAndPassword(
+        email: emailController.text.toString(),
+        password: passwordController.text.toString(),
+      );
+
+      // // Store user information in Firestore
+      // await FirebaseFirestore.instance.collection("users").add({
+      //   "name": userNameController.text.toString(),
+      //   "contact": contactController.text.toString(),
+      //   "email": emailController.text.toString(),
+      // });
+
+      // Store user information in Firestore
+      // String id = DateTime.now().millisecondsSinceEpoch.toString();
+
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      await fireStore.doc(uid).set({
+        "id": uid,
+        "username": userNameController.text.toString(),
+        "contact": contactController.text.toString(),
+        "email": emailController.text.toString(),
+      });
+
+      setState(() {
+        Utils().toastMessage("Your account has been successfully registered");
+        circularLoader = false;
+      });
+
+      // ignore: use_build_context_synchronously
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
+    } catch (error) {
       setState(() {
         Utils().toastMessage(error.toString());
         circularLoader = false;
       });
-    });
+    }
   }
 
   @override
   void dispose() {
     super.dispose();
+    userNameController.dispose();
     emailController.dispose();
     passwordController.dispose();
+    contactController.dispose();
   }
 
   @override
@@ -151,6 +182,67 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         height: 15,
                       ),
                       TextFormField(
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        keyboardType: TextInputType.phone,
+                        textCapitalization: TextCapitalization.words,
+                        onTapOutside: (event) {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                        },
+                        controller: contactController,
+                        decoration: const InputDecoration(
+                          labelText: 'Contact',
+                          prefixIcon: Icon(
+                            Icons.phone_outlined,
+                            color: Color.fromRGBO(103, 58, 183, 1),
+                          ),
+                          labelStyle: TextStyle(
+                            color: Colors.deepPurple,
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                              width: 1.5,
+                              style: BorderStyle.solid,
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.deepPurple,
+                              width: 1.5,
+                              style: BorderStyle.solid,
+                            ),
+                          ),
+                          errorBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.deepPurple,
+                              width: 1.5,
+                              style: BorderStyle.solid,
+                            ),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Enter your Contact please';
+                          }
+
+                          // Remove any spaces, dashes, or other non-digit characters
+                          String cleanedValue =
+                              value.replaceAll(RegExp(r'[^0-9]'), '');
+
+                          if (cleanedValue.length != 11) {
+                            return 'Contact number should be exactly 11 digits';
+                          }
+
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      TextFormField(
                         enableSuggestions: true,
                         autocorrect: true,
                         style: const TextStyle(
@@ -229,6 +321,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             color: Colors.deepPurple,
                           ),
                           suffixIcon: InkWell(
+                            splashColor: Colors.transparent,
                             onTap: () {
                               hideAndShow();
                             },
@@ -296,6 +389,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       "Already have an account ?   ",
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
+                        fontSize: 16,
                       ),
                     ),
                     InkWell(
@@ -310,7 +404,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           color: Colors.deepPurple,
-                          fontSize: 17,
+                          fontSize: 16,
                         ),
                       ),
                     ),

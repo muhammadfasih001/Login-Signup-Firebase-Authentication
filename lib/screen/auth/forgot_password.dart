@@ -16,7 +16,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   final emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool circularLoader = false;
-  final _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void forgotPassword() {
     setState(() {
@@ -55,7 +55,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         backgroundColor: const Color(0xffF8F9FB),
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 50),
+            padding: const EdgeInsets.symmetric(vertical: 50),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
