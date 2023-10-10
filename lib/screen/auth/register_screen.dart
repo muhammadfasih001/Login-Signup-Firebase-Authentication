@@ -44,23 +44,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
         password: passwordController.text.toString(),
       );
 
-      // // Store user information in Firestore
-      // await FirebaseFirestore.instance.collection("users").add({
-      //   "name": userNameController.text.toString(),
-      //   "contact": contactController.text.toString(),
-      //   "email": emailController.text.toString(),
-      // });
-
       // Store user information in Firestore
       // String id = DateTime.now().millisecondsSinceEpoch.toString();
 
-      String uid = FirebaseAuth.instance.currentUser!.uid;
-      await fireStore.doc(uid).set({
-        "id": uid,
-        "username": userNameController.text.toString(),
-        "contact": contactController.text.toString(),
-        "email": emailController.text.toString(),
-      });
+      // String uid = FirebaseAuth.instance.currentUser!.uid;
+      // await fireStore.doc(uid).set({
+      //   "id": uid,
+      //   "username": userNameController.text.toString(),
+      //   "contact": contactController.text.toString(),
+      //   "email": emailController.text.toString(),
+      // });
 
       setState(() {
         Utils().toastMessage("Your account has been successfully registered");
