@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_login_page/screen/auth/forgot_password.dart';
 import 'package:flutter_login_page/screen/auth/register_screen.dart';
 import 'package:flutter_login_page/screen/firestore/firestore_home_screen.dart';
-import 'package:flutter_login_page/screen/ui/home_view.dart';
 import 'package:flutter_login_page/utils/utils.dart';
 import 'package:flutter_login_page/widgets/round_button.dart';
 
