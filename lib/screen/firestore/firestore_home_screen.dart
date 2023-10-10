@@ -21,6 +21,8 @@ class _FirestoreHomeScreenState extends State<FirestoreHomeScreen> {
   final CollectionReference ref =
       FirebaseFirestore.instance.collection("users");
 
+  bool showMessage = true;
+
   Future<void> signOut() async {
     try {
       await auth.signOut();
@@ -161,7 +163,7 @@ class _FirestoreHomeScreenState extends State<FirestoreHomeScreen> {
                   Utils().toastMessage(error.toString());
                 }
               },
-              child: const Text("update"),
+              child: const Text("Update"),
             ),
           ],
         );
@@ -239,8 +241,11 @@ class _FirestoreHomeScreenState extends State<FirestoreHomeScreen> {
                         "An error occurred: ${snapshot.error.toString()}");
                   }
 
-                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    Utils().toastMessage("No data available");
+                  if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
+                    if (showMessage) {
+                      showMessage = false;
+                      Utils().toastMessage("No data available");
+                    }
                   }
 
                   return Expanded(
@@ -248,6 +253,10 @@ class _FirestoreHomeScreenState extends State<FirestoreHomeScreen> {
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) {
                         DocumentSnapshot dataIndex = snapshot.data!.docs[index];
+
+                        if (!dataIndex.exists) {
+                          Utils().toastMessage("Data does not exists");
+                        }
                         return Slidable(
                           endActionPane: ActionPane(
                             motion: const DrawerMotion(),
@@ -277,8 +286,8 @@ class _FirestoreHomeScreenState extends State<FirestoreHomeScreen> {
                             leading: const CircleAvatar(
                               backgroundColor: Colors.deepPurple,
                             ),
-                            title: Text("${dataIndex["title"]}"),
                             subtitle: Text(dataIndex["id"]),
+                            title: Text("${dataIndex["title"]}"),
                           ),
                         );
                       },

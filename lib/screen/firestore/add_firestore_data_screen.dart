@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login_page/screen/firestore/firestore_home_screen.dart';
@@ -14,11 +15,11 @@ class AddFirestoreDataScreen extends StatefulWidget {
 
 class _AddFirestoreDataScreenState extends State<AddFirestoreDataScreen> {
   final addDataController = TextEditingController();
-  bool circularLoader = false;
   final CollectionReference fireStore =
       FirebaseFirestore.instance.collection("users");
+  bool circularLoader = false;
 
-  addUser() async {
+  Future<void> addUser() async {
     try {
       setState(() {
         circularLoader = true;
@@ -28,7 +29,6 @@ class _AddFirestoreDataScreenState extends State<AddFirestoreDataScreen> {
         "id": uid,
         "title": addDataController.text.toString(),
       });
-
       Utils().toastMessage("Data add Successfully");
       setState(() {
         circularLoader = false;

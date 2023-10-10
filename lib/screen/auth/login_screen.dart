@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login_page/screen/auth/forgot_password.dart';
 import 'package:flutter_login_page/screen/auth/register_screen.dart';
+import 'package:flutter_login_page/screen/firestore/firestore_home_screen.dart';
 import 'package:flutter_login_page/screen/ui/home_view.dart';
 import 'package:flutter_login_page/utils/utils.dart';
 import 'package:flutter_login_page/widgets/round_button.dart';
@@ -36,7 +37,9 @@ class _LoginScreenState extends State<LoginScreen> {
         Utils().toastMessage("Log in Successfully");
         circularLoader = false;
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const HomeView()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => const FirestoreHomeScreen()));
       });
     }).onError((error, stackTrace) {
       setState(() {
