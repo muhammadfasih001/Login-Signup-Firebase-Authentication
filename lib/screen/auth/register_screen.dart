@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login_page/screen/auth/login_screen.dart';
@@ -23,8 +22,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final contactController = TextEditingController();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final CollectionReference fireStore =
-      FirebaseFirestore.instance.collection("users");
+  // final CollectionReference fireStore =
+  //     FirebaseFirestore.instance.collection("users");
 
   hideAndShow() {
     setState(() {
@@ -43,17 +42,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         email: emailController.text.toString(),
         password: passwordController.text.toString(),
       );
-
-      // Store user information in Firestore
-      // String id = DateTime.now().millisecondsSinceEpoch.toString();
-
-      // String uid = FirebaseAuth.instance.currentUser!.uid;
-      // await fireStore.doc(uid).set({
-      //   "id": uid,
-      //   "username": userNameController.text.toString(),
-      //   "contact": contactController.text.toString(),
-      //   "email": emailController.text.toString(),
-      // });
 
       setState(() {
         Utils().toastMessage("Your account has been successfully registered");

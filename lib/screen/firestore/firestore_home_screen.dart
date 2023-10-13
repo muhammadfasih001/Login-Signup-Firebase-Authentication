@@ -283,8 +283,10 @@ class _FirestoreHomeScreenState extends State<FirestoreHomeScreen> {
                             ],
                           ),
                           child: ListTile(
-                            leading: const CircleAvatar(
-                              backgroundColor: Colors.deepPurple,
+                            leading: const Icon(
+                              Icons.account_circle_outlined,
+                              color: Colors.deepPurple,
+                              size: 35,
                             ),
                             subtitle: Text(dataIndex["id"]),
                             title: Text("${dataIndex["title"]}"),
